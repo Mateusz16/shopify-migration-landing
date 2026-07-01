@@ -1,31 +1,19 @@
 ---
 import SectionHeading from './SectionHeading.astro';
+import { fetchSingleton } from '../lib/sanity/content';
+import { audienceFilterQuery } from '../lib/sanity/queries';
+import { audienceFilterDefault } from '../lib/sanity/defaults';
 
-const fits = [
-  'Masz działający sklep na Shopify, WooCommerce, PrestaShop lub Magento i wiesz, że stary silnik (albo jego brak porządku) ogranicza sprzedaż.',
-  'Sprzedajesz realny wolumen — migracja ma się zwrócić z konwersji, nie tylko „wyglądać nowocześniej”.',
-  'Chcesz mieć jedną osobę odpowiedzialną za wdrożenie i utrzymanie, nie ticket w kolejce agencji.',
-  'Rozumiesz, że dobra migracja wymaga audytu przed wyceną — nie szukasz gotowego cennika z paczkami.',
-];
-
-const notFits = [
-  'Potrzebujesz sklepu „na już”, w tydzień, bez audytu i bez pytań o dane.',
-  'Szukasz najtańszej oferty na rynku — to nie jest usługa z dolnej półki.',
-  'Nie masz dostępu do panelu obecnej platformy ani osoby decyzyjnej po Twojej stronie.',
-  'Chcesz zlecić migrację i zniknąć — bez szkolenia i przekazania wiedzy o nowym sklepie.',
-];
+const section = await fetchSingleton(audienceFilterQuery, audienceFilterDefault);
+const { eyebrow, title, description, fitsHeading, fits, notFitsHeading, notFits } = section;
 ---
 
 <section id="dla-kogo" class="mx-auto max-w-content px-5 py-20 sm:px-8 sm:py-28">
-  <SectionHeading
-    eyebrow="Dla kogo"
-    title="Szczerze: komu to pomoże, a komu nie"
-    description="Pracuję z ograniczoną liczbą klientów naraz, więc wolę odsiać na starcie niż rozczarować w trakcie."
-  />
+  <SectionHeading eyebrow={eyebrow} title={title} description={description} />
 
   <div class="mt-12 grid gap-6 lg:grid-cols-2">
     <div class="reveal rounded-md border border-mint/30 bg-mint-soft/60 p-6 sm:p-8">
-      <h3 class="font-display text-xl font-semibold text-ink">To dla Ciebie, jeśli:</h3>
+      <h3 class="font-display text-xl font-semibold text-ink">{fitsHeading}</h3>
       <ul class="mt-5 flex flex-col gap-4">
         {
           fits.map((item) => (
@@ -39,7 +27,7 @@ const notFits = [
     </div>
 
     <div class="reveal rounded-md border border-ember/30 bg-ember-soft/50 p-6 sm:p-8">
-      <h3 class="font-display text-xl font-semibold text-ink">To nie dla Ciebie, jeśli:</h3>
+      <h3 class="font-display text-xl font-semibold text-ink">{notFitsHeading}</h3>
       <ul class="mt-5 flex flex-col gap-4">
         {
           notFits.map((item) => (

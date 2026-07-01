@@ -1,47 +1,22 @@
 ---
 import SectionHeading from './SectionHeading.astro';
+import { fetchSingleton } from '../lib/sanity/content';
+import { processStepsQuery } from '../lib/sanity/queries';
+import { processStepsDefault } from '../lib/sanity/defaults';
 
-const steps = [
-  {
-    n: '01',
-    title: 'Audyt',
-    duration: '3–7 dni',
-    body: 'Analiza obecnego sklepu: struktura produktów, ruch i pozycje SEO, integracje, wąskie gardła w checkoucie. Efekt: wycena i plan migracji, nie ogólnikowa oferta.',
-  },
-  {
-    n: '02',
-    title: 'Wdrożenie',
-    duration: '2–6 tygodni',
-    body: 'Budowa sklepu na Shopify zgodnie z planem z audytu: motyw, migracja danych, integracje, przekierowania. Praca na środowisku testowym, bez przerywania sprzedaży na starej platformie.',
-  },
-  {
-    n: '03',
-    title: 'Launch i szkolenie',
-    duration: '1 tydzień',
-    body: 'Przełączenie DNS, kontrola indeksacji i płatności na produkcji, sesja szkoleniowa z panelem Shopify dla Ciebie i zespołu.',
-  },
-  {
-    n: '04',
-    title: 'Maintenance i rozwój',
-    duration: 'stale, co miesiąc',
-    body: 'Bieżące utrzymanie, aktualizacje, drobne zmiany i priorytety rozwoju sklepu ustalane wspólnie — nie zgadywane z zewnątrz.',
-  },
-];
+const section = await fetchSingleton(processStepsQuery, processStepsDefault);
+const { eyebrow, title, description, steps } = section;
 ---
 
 <section id="proces" class="mx-auto max-w-content px-5 py-20 sm:px-8 sm:py-28">
-  <SectionHeading
-    eyebrow="Proces"
-    title="Cztery etapy, żadnych niespodzianek"
-    description="Każdy etap kończy się konkretnym rezultatem, który możesz zweryfikować, zanim ruszy kolejny."
-  />
+  <SectionHeading eyebrow={eyebrow} title={title} description={description} />
 
   <ol class="mt-14 grid gap-10 lg:grid-cols-4 lg:gap-6">
     {
       steps.map((step) => (
         <li class="reveal relative flex flex-col gap-3 border-t-2 border-ink/15 pt-6">
           <span class="absolute -top-[9px] left-0 h-[17px] w-[17px] rounded-full border-2 border-signal bg-canvas" aria-hidden="true" />
-          <span class="font-mono text-xs text-signal">{step.n}</span>
+          <span class="font-mono text-xs text-signal">{step.number}</span>
           <h3 class="font-display text-xl font-semibold text-ink">{step.title}</h3>
           <p class="font-mono text-xs uppercase tracking-wide text-ink-soft/60">{step.duration}</p>
           <p class="text-[15px] leading-relaxed text-ink-soft/85">{step.body}</p>

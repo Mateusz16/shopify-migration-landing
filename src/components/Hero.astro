@@ -1,40 +1,43 @@
 ---
 import DiagnosticPanel from './DiagnosticPanel.astro';
+import { fetchSingleton } from '../lib/sanity/content';
+import { heroQuery } from '../lib/sanity/queries';
+import { heroDefault } from '../lib/sanity/defaults';
+
+const hero = await fetchSingleton(heroQuery, heroDefault);
 ---
 
 <section class="mx-auto max-w-content px-5 pb-20 pt-14 sm:px-8 sm:pt-20 lg:pb-28">
   <div class="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10">
     <div>
       <p class="font-mono text-xs uppercase tracking-[0.2em] text-signal font-medium">
-        Migracja e-commerce → Shopify
+        {hero.eyebrow}
       </p>
       <h1 class="mt-4 text-4xl font-semibold leading-[1.08] text-ink sm:text-5xl lg:text-[3.4rem]">
-        Migracja do Shopify to inwestycja w konwersję —
-        <span class="text-signal">nie koszt techniczny.</span>
+        {hero.titleMain}
+        <span class="text-signal">{hero.titleHighlight}</span>
       </h1>
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft/85">
-        Przenoszę sklepy z WooCommerce, PrestaShop i Magento na Shopify tak,
-        żeby szybszy checkout, zero utraty SEO i uporządkowany katalog
-        produktów przełożyły się na liczby, nie tylko na nowy wygląd.
+        {hero.description}
       </p>
 
       <div class="mt-9 flex flex-col gap-3 sm:flex-row">
         <a
-          href="#kontakt"
+          href={hero.primaryCtaHref}
           class="inline-flex items-center justify-center rounded-sm bg-ink px-6 py-3.5 text-base font-semibold text-porcelain hover:bg-signal transition-colors"
         >
-          Umów audyt
+          {hero.primaryCtaLabel}
         </a>
         <a
-          href="#zakres"
+          href={hero.secondaryCtaHref}
           class="inline-flex items-center justify-center rounded-sm border border-ink/20 px-6 py-3.5 text-base font-semibold text-ink hover:border-signal hover:text-signal transition-colors"
         >
-          Zobacz zakres usługi
+          {hero.secondaryCtaLabel}
         </a>
       </div>
 
       <p class="mt-6 font-mono text-xs text-ink-soft/50">
-        4–5 klientów jednocześnie — bez kolejki, z pełną uwagą na projekt.
+        {hero.note}
       </p>
     </div>
 
