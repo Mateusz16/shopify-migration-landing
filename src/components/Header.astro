@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import avatar from '../assets/images/mateusz-avatar.jpg';
+
 const navLinks = [
   { href: '#dla-kogo', label: 'Dla kogo' },
   { href: '#zakres', label: 'Zakres' },
@@ -9,10 +12,22 @@ const navLinks = [
 ];
 ---
 
-<header class="sticky top-0 z-50 border-b border-ink/10 bg-canvas/90 backdrop-blur">
-  <div class="mx-auto flex max-w-content items-center justify-between px-5 py-4 sm:px-8">
-    <a href="#top" class="font-display text-lg font-semibold tracking-tight text-ink">
-      Klawitter<span class="text-signal">/</span>Shopify
+<header id="site-header" class="sticky top-0 z-50 px-4 pt-4 transition-[padding] duration-300 sm:px-6">
+  <div
+    id="navbar-pill"
+    class="mx-auto flex max-w-content items-center justify-between rounded-full border border-ink/10 bg-canvas/75 px-4 py-3 shadow-lg shadow-ink/5 backdrop-blur-md transition-all duration-300 sm:px-6"
+  >
+    <a href="#top" class="flex items-center gap-2.5">
+      <Image
+        src={avatar}
+        alt="Mateusz Klawitter"
+        width={72}
+        height={72}
+        class="h-9 w-9 rounded-full object-cover ring-2 ring-porcelain sm:h-10 sm:w-10"
+      />
+      <span class="font-display text-lg font-semibold tracking-tight text-ink">
+        MK<span class="text-signal">/</span>Shopify
+      </span>
     </a>
 
     <nav aria-label="Nawigacja główna" class="hidden lg:flex items-center gap-7">
@@ -31,7 +46,7 @@ const navLinks = [
     <div class="hidden lg:block">
       <a
         href="#kontakt"
-        class="inline-flex items-center rounded-sm bg-ink px-4 py-2 text-sm font-semibold text-porcelain hover:bg-signal transition-colors"
+        class="inline-flex items-center rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-porcelain hover:bg-signal transition-colors"
       >
         Umów audyt
       </a>
@@ -40,7 +55,7 @@ const navLinks = [
     <button
       id="menu-toggle"
       type="button"
-      class="lg:hidden inline-flex items-center justify-center rounded-sm border border-ink/20 p-2 text-ink"
+      class="lg:hidden inline-flex items-center justify-center rounded-full border border-ink/20 p-2 text-ink"
       aria-expanded="false"
       aria-controls="mobile-nav"
     >
@@ -60,7 +75,7 @@ const navLinks = [
   <nav
     id="mobile-nav"
     aria-label="Nawigacja mobilna"
-    class="hidden lg:hidden flex-col gap-1 border-t border-ink/10 bg-canvas px-5 pb-5 pt-3"
+    class="mx-auto hidden lg:hidden max-w-content flex-col gap-1 rounded-2xl border border-ink/10 bg-canvas px-5 pb-5 pt-3 mt-2 shadow-lg shadow-ink/5"
   >
     {
       navLinks.map((link) => (
@@ -74,7 +89,7 @@ const navLinks = [
     }
     <a
       href="#kontakt"
-      class="mt-2 inline-flex items-center justify-center rounded-sm bg-ink px-4 py-3 text-sm font-semibold text-porcelain"
+      class="mt-2 inline-flex items-center justify-center rounded-full bg-ink px-4 py-3 text-sm font-semibold text-porcelain"
     >
       Umów audyt
     </a>
@@ -104,4 +119,18 @@ const navLinks = [
       toggle?.setAttribute('aria-expanded', 'false');
     });
   });
+
+  // Pigułka navbar "kurczy się" po przewinięciu strony.
+  const siteHeader = document.getElementById('site-header');
+  const navbarPill = document.getElementById('navbar-pill');
+  const SCROLL_THRESHOLD = 24;
+
+  const updateScrollState = () => {
+    const isScrolled = window.scrollY > SCROLL_THRESHOLD;
+    siteHeader?.classList.toggle('is-scrolled', isScrolled);
+    navbarPill?.classList.toggle('is-scrolled', isScrolled);
+  };
+
+  updateScrollState();
+  window.addEventListener('scroll', updateScrollState, { passive: true });
 </script>

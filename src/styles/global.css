@@ -120,4 +120,63 @@
       transition: none;
     }
   }
+
+  /* Delikatna, ciągła animacja "unoszenia się" — logo Shopify w Hero */
+  @keyframes float-gentle {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-5px) rotate(-4deg);
+    }
+  }
+
+  .animate-float {
+    animation: float-gentle 3.6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float {
+      animation: none;
+    }
+  }
+
+  /* Rysowanie linii wykresu przy wejściu w viewport — path musi mieć pathLength="1" */
+  .chart-line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.4s ease 0.2s;
+  }
+
+  .reveal.is-visible .chart-line {
+    stroke-dashoffset: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chart-line {
+      transition: none;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Subtelna siatka w tle — Hero i panel diagnostyczny */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, currentColor 1px, transparent 1px),
+      linear-gradient(to bottom, currentColor 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Navbar-pigułka: kurczy się po przewinięciu strony (patrz Header.astro) */
+  #site-header.is-scrolled {
+    padding-top: 0.5rem;
+  }
+
+  #navbar-pill.is-scrolled {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: color-mix(in srgb, var(--color-canvas) 92%, transparent);
+    box-shadow: 0 10px 30px -15px rgba(20, 23, 28, 0.25);
+  }
 }
