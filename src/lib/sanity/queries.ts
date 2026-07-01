@@ -1,0 +1,11 @@
+export const siteSettingsQuery = /* groq */ `*[_type == "siteSettings"][0]`;
+export const heroQuery = /* groq */ `*[_type == "hero"][0]`;
+export const diagnosticPanelQuery = /* groq */ `*[_type == "diagnosticPanel"][0]`;
+export const audienceFilterQuery = /* groq */ `*[_type == "audienceFilter"][0]`;
+export const serviceGridQuery = /* groq */ `*[_type == "serviceGrid"][0]`;
+export const processStepsQuery = /* groq */ `*[_type == "processSteps"][0]`;
+export const pricingModelQuery = /* groq */ `*[_type == "pricingModel"][0]`;
+export const aboutMeQuery = /* groq */ `*[_type == "aboutMe"][0]`;
+export const contactCtaQuery = /* groq */ `*[_type == "contactCta"][0]`;
+export const caseStudiesSectionQuery = /* groq */ `*[_type == "caseStudiesSection"][0]`;
+export const caseStudiesQuery = /* groq */ `*[_type == "caseStudy"] | order(publishedDate desc)`;

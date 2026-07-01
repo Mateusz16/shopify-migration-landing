@@ -1,18 +1,35 @@
 ---
-const navLinks = [
-  { href: '#dla-kogo', label: 'Dla kogo' },
-  { href: '#zakres', label: 'Zakres' },
-  { href: '#proces', label: 'Proces' },
-  { href: '#cennik', label: 'Cennik' },
-  { href: '#case-studies', label: 'Case studies' },
-  { href: '#o-mnie', label: 'O mnie' },
-];
+import { fetchSingleton } from '../lib/sanity/content';
+import { siteSettingsQuery } from '../lib/sanity/queries';
+import { siteSettingsDefault } from '../lib/sanity/defaults';
+import { urlFor } from '../lib/sanity/image';
+
+const siteSettings = await fetchSingleton(siteSettingsQuery, siteSettingsDefault);
+const { navLinks, ctaLabel, brandLabel, logo } = siteSettings;
+const [brandName, ...brandRest] = brandLabel.split('/');
+const brandSuffix = brandRest.length > 0 ? brandRest.join('/') : '';
+const logoUrl = logo ? urlFor(logo).height(32).url() : null;
+const logoAlt = logo?.alt || brandLabel;
 ---
 
 <header class="sticky top-0 z-50 border-b border-ink/10 bg-canvas/90 backdrop-blur">
   <div class="mx-auto flex max-w-content items-center justify-between px-5 py-4 sm:px-8">
     <a href="#top" class="font-display text-lg font-semibold tracking-tight text-ink">
-      Klawitter<span class="text-signal">/</span>Shopify
+      {
+        logoUrl ? (
+          <img src={logoUrl} alt={logoAlt} class="h-8 w-auto" />
+        ) : (
+          <>
+            {brandName}
+            {brandSuffix && (
+              <>
+                <span class="text-signal">/</span>
+                {brandSuffix}
+              </>
+            )}
+          </>
+        )
+      }
     </a>
 
     <nav aria-label="Nawigacja główna" class="hidden lg:flex items-center gap-7">
@@ -33,7 +50,7 @@ const navLinks = [
         href="#kontakt"
         class="inline-flex items-center rounded-sm bg-ink px-4 py-2 text-sm font-semibold text-porcelain hover:bg-signal transition-colors"
       >
-        Umów audyt
+        {ctaLabel}
       </a>
     </div>
 
@@ -76,7 +93,7 @@ const navLinks = [
       href="#kontakt"
       class="mt-2 inline-flex items-center justify-center rounded-sm bg-ink px-4 py-3 text-sm font-semibold text-porcelain"
     >
-      Umów audyt
+      {ctaLabel}
     </a>
   </nav>
 </header>

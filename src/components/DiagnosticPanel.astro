@@ -1,17 +1,10 @@
 ---
-interface Metric {
-  label: string;
-  before: string;
-  after: string;
-  delta: string;
-}
+import { fetchSingleton } from '../lib/sanity/content';
+import { diagnosticPanelQuery } from '../lib/sanity/queries';
+import { diagnosticPanelDefault } from '../lib/sanity/defaults';
 
-const metrics: Metric[] = [
-  { label: 'Czas ładowania (LCP)', before: '4.6 s', after: '1.4 s', delta: '-70%' },
-  { label: 'Konwersja checkoutu', before: '1.3%', after: '2.4%', delta: '+85%' },
-  { label: 'Porzucone koszyki', before: '74%', after: '58%', delta: '-22%' },
-  { label: 'Widoczność SEO (frazy produktowe)', before: '100 (bazowo)', after: '109', delta: '+9%' },
-];
+const panel = await fetchSingleton(diagnosticPanelQuery, diagnosticPanelDefault);
+const { heading, badge, metrics, footnote } = panel;
 ---
 
 <div class="reveal relative">
@@ -32,11 +25,11 @@ const metrics: Metric[] = [
 
     <div class="relative flex items-center justify-between border-b border-white/10 pb-4">
       <p class="font-mono text-xs uppercase tracking-[0.25em] text-porcelain/60">
-        Diagnostyka // przed i po migracji
+        {heading}
       </p>
       <span class="flex items-center gap-2 font-mono text-xs text-mint">
         <span class="h-1.5 w-1.5 rounded-full bg-mint" aria-hidden="true"></span>
-        model referencyjny
+        {badge}
       </span>
     </div>
 
@@ -61,9 +54,7 @@ const metrics: Metric[] = [
     </dl>
 
     <p class="relative mt-6 border-t border-white/10 pt-4 font-mono text-[11px] leading-relaxed text-porcelain/40">
-      Wartości ilustracyjne — typowy zakres poprawy na bazie audytów sklepów
-      WooCommerce/PrestaShop migrowanych na Shopify. Realne liczby Twojego
-      sklepu poznasz po audycie.
+      {footnote}
     </p>
   </div>
 </div>
