@@ -8,13 +8,10 @@ import PricingModel from '../../components/PricingModel.astro';
 import CaseStudies from '../../components/CaseStudies.astro';
 import AboutMe from '../../components/AboutMe.astro';
 import ContactCta from '../../components/ContactCta.astro';
-import { fetchSingleton } from '../../lib/sanity/content';
-import { siteSettingsQuery } from '../../lib/sanity/queries';
-import { siteSettingsDefault } from '../../lib/sanity/defaults';
 
-const siteSettings = await fetchSingleton(siteSettingsQuery, siteSettingsDefault);
-const title = siteSettings.metaTitle;
-const description = siteSettings.metaDescription;
+const title = 'Migracja sklepu do Shopify — audyt, wdrożenie, wzrost konwersji';
+const description =
+  'Migracja sklepu e-commerce do Shopify wyceniana po audycie: szybszy checkout, zero utraty SEO, pełna migracja produktów i comiesięczne wsparcie. Maks. 4-5 klientów jednocześnie.';
 ---
 
 <BaseLayout title={title} description={description}>
