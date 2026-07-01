@@ -1,0 +1,107 @@
+---
+const navLinks = [
+  { href: '#dla-kogo', label: 'Dla kogo' },
+  { href: '#zakres', label: 'Zakres' },
+  { href: '#proces', label: 'Proces' },
+  { href: '#cennik', label: 'Cennik' },
+  { href: '#case-studies', label: 'Case studies' },
+  { href: '#o-mnie', label: 'O mnie' },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-ink/10 bg-canvas/90 backdrop-blur">
+  <div class="mx-auto flex max-w-content items-center justify-between px-5 py-4 sm:px-8">
+    <a href="#top" class="font-display text-lg font-semibold tracking-tight text-ink">
+      Klawitter<span class="text-signal">/</span>Shopify
+    </a>
+
+    <nav aria-label="Nawigacja główna" class="hidden lg:flex items-center gap-7">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm font-medium text-ink-soft hover:text-signal transition-colors"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="hidden lg:block">
+      <a
+        href="#kontakt"
+        class="inline-flex items-center rounded-sm bg-ink px-4 py-2 text-sm font-semibold text-porcelain hover:bg-signal transition-colors"
+      >
+        Umów audyt
+      </a>
+    </div>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      class="lg:hidden inline-flex items-center justify-center rounded-sm border border-ink/20 p-2 text-ink"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+    >
+      <span class="sr-only">Otwórz menu</span>
+      <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+      <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="5" y1="5" x2="19" y2="19"></line>
+        <line x1="19" y1="5" x2="5" y2="19"></line>
+      </svg>
+    </button>
+  </div>
+
+  <nav
+    id="mobile-nav"
+    aria-label="Nawigacja mobilna"
+    class="hidden lg:hidden flex-col gap-1 border-t border-ink/10 bg-canvas px-5 pb-5 pt-3"
+  >
+    {
+      navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="rounded-sm px-2 py-2.5 text-base font-medium text-ink-soft hover:bg-porcelain hover:text-signal"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    <a
+      href="#kontakt"
+      class="mt-2 inline-flex items-center justify-center rounded-sm bg-ink px-4 py-3 text-sm font-semibold text-porcelain"
+    >
+      Umów audyt
+    </a>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = mobileNav?.classList.toggle('flex');
+    mobileNav?.classList.toggle('hidden');
+    iconOpen?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
+
+  mobileNav?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.add('hidden');
+      mobileNav.classList.remove('flex');
+      iconOpen?.classList.remove('hidden');
+      iconClose?.classList.add('hidden');
+      toggle?.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>

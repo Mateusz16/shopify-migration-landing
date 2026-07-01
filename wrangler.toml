@@ -1,0 +1,9 @@
+# Konfiguracja opcjonalna — używana tylko do ręcznego deployu przez
+# `npm run pages:deploy` (wrangler pages deploy). Cloudflare Pages podłączone
+# bezpośrednio do repo (Git integration) NIE wymaga tego pliku — build
+# command i output directory ustawia się wtedy w panelu Cloudflare Pages
+# (patrz README.md).
+
+name = "matklawitter-shopify-migration"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-06-01"

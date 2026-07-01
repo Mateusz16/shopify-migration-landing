@@ -1,0 +1,123 @@
+@import 'tailwindcss';
+
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+
+/*
+  System designu — Shopify migration landing.
+
+  ink       — tekst / tła techniczne (panel diagnostyczny, stopka)
+  canvas    — tło strony, ciepła, przydymiona biel (nie "kremowa")
+  porcelain — powierzchnie kart, jaśniejsze od canvas
+  signal    — akcent marki: CTA, linki, focus ring
+  ember     — dane "przed" w panelu diagnostycznym (ciepły, ostrzegawczy)
+  mint      — dane "po" w panelu diagnostycznym (wzrost, potwierdzenie)
+*/
+@theme {
+  --color-ink: #14171c;
+  --color-ink-soft: #2a2f38;
+  --color-canvas: #f2f0e9;
+  --color-porcelain: #faf9f5;
+  --color-signal: #3452ff;
+  --color-signal-soft: #dbe1ff;
+  --color-ember: #e8641b;
+  --color-ember-soft: #fbe4d2;
+  --color-mint: #1f9d6c;
+  --color-mint-soft: #d9efe3;
+
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1.25rem;
+
+  --container-content: 72rem;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background-color: var(--color-signal);
+    color: var(--color-porcelain);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  /* Widoczny focus state dla nawigacji klawiaturą */
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
