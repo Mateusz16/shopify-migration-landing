@@ -1,29 +1,25 @@
 ---
+import { getCollection } from 'astro:content';
 import SectionHeading from './SectionHeading.astro';
 import CaseStudyCard from './CaseStudyCard.astro';
-import { fetchSingleton, fetchList } from '../lib/sanity/content';
-import { caseStudiesSectionQuery, caseStudiesQuery } from '../lib/sanity/queries';
-import { caseStudiesSectionDefault, caseStudiesDefault } from '../lib/sanity/defaults';
 
-const [section, entries] = await Promise.all([
-  fetchSingleton(caseStudiesSectionQuery, caseStudiesSectionDefault),
-  fetchList(caseStudiesQuery, caseStudiesDefault),
-]);
-const { eyebrow, title, description, placeholderNotice } = section;
-const showPlaceholderNotice = placeholderNotice && entries.some((entry) => entry.isPlaceholder);
+const entries = (await getCollection('case-studies')).sort(
+  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+);
 ---
 
 <section id="case-studies" class="bg-porcelain">
   <div class="mx-auto max-w-content px-5 py-20 sm:px-8 sm:py-28">
-    <SectionHeading eyebrow={eyebrow} title={title} description={description} />
+    <SectionHeading
+      eyebrow="Case studies"
+      title="Wyniki wdrożeń"
+      description="Pierwsze migracje są w toku — case studies z realnymi liczbami pojawią się tutaj po ich zakończeniu."
+    />
 
-    {
-      showPlaceholderNotice && (
-        <div class="reveal mt-8 rounded-md border border-ink/10 bg-canvas p-5 text-sm text-ink-soft/80">
-          {placeholderNotice}
-        </div>
-      )
-    }
+    <div class="reveal mt-8 rounded-md border border-ink/10 bg-canvas p-5 text-sm text-ink-soft/80">
+      Poniższa karta pokazuje wyłącznie strukturę case study (przykładowe,
+      fikcyjne dane) — nie jest to wynik realnego wdrożenia.
+    </div>
 
     <div class="mt-10 grid gap-6 sm:grid-cols-2">
       {entries.map((entry) => <CaseStudyCard entry={entry} />)}

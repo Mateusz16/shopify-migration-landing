@@ -1,34 +1,29 @@
 ---
-import { fetchSingleton } from '../lib/sanity/content';
-import { aboutMeQuery } from '../lib/sanity/queries';
-import { aboutMeDefault } from '../lib/sanity/defaults';
-import { urlFor } from '../lib/sanity/image';
-
-const about = await fetchSingleton(aboutMeQuery, aboutMeDefault);
-const { eyebrow, name, intro, points, portrait } = about;
-const portraitUrl = portrait ? urlFor(portrait).width(480).height(480).url() : null;
-const portraitAlt = portrait?.alt || name;
+const points = [
+  {
+    title: 'Doświadczenie z dwóch stron',
+    body: 'Kilka lat w IT po stronie inżynierskiej i kilka lat po stronie e-commerce — rozumiem zarówno kod sklepu, jak i to, co faktycznie wpływa na sprzedaż.',
+  },
+  {
+    title: 'AI-first, nie AI-hype',
+    body: 'Pracuję z Claude Code jako głównym narzędziem developerskim. To przewaga w tempie i jakości audytu — nie zamiennik decyzji, które i tak podejmuję sam.',
+  },
+  {
+    title: 'Jeden ekspert, nie zespół juniorów',
+    body: 'Każdy projekt prowadzę osobiście, od audytu po maintenance. Dlatego limit 4–5 klientów jednocześnie — to warunek utrzymania jakości, nie marketingowy trik.',
+  },
+];
 ---
 
 <section id="o-mnie" class="mx-auto max-w-content px-5 py-20 sm:px-8 sm:py-28">
   <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
     <div class="reveal">
-      <p class="font-mono text-xs uppercase tracking-[0.2em] text-signal font-medium">{eyebrow}</p>
-      <h2 class="mt-3 text-3xl sm:text-4xl font-semibold text-ink">{name}</h2>
-      {
-        portraitUrl && (
-          <img
-            src={portraitUrl}
-            alt={portraitAlt}
-            width="240"
-            height="240"
-            class="mt-6 aspect-square w-40 rounded-md object-cover"
-            loading="lazy"
-          />
-        )
-      }
+      <p class="font-mono text-xs uppercase tracking-[0.2em] text-signal font-medium">O mnie</p>
+      <h2 class="mt-3 text-3xl sm:text-4xl font-semibold text-ink">Mateusz Klawitter</h2>
       <p class="mt-5 text-lg leading-relaxed text-ink-soft/85">
-        {intro}
+        Migruję sklepy e-commerce do Shopify jako jednoosobowy zespół
+        wspierany przez AI-first proces developerski — nie jako agencja z
+        wieloma projektami naraz.
       </p>
     </div>
 

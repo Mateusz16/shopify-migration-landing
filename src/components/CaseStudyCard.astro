@@ -1,23 +1,12 @@
 ---
-interface CaseStudyMetric {
-  label: string;
-  before: string;
-  after: string;
-}
+import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  entry: {
-    clientName: string;
-    industry: string;
-    sourcePlatform: string;
-    summary: string;
-    metrics: CaseStudyMetric[];
-    isPlaceholder?: boolean;
-  };
+  entry: CollectionEntry<'case-studies'>;
 }
 
 const { entry } = Astro.props;
-const { clientName, industry, sourcePlatform, summary, metrics, isPlaceholder } = entry;
+const { clientName, industry, sourcePlatform, summary, metrics, isPlaceholder } = entry.data;
 ---
 
 <article class="reveal relative flex flex-col gap-5 rounded-md border border-ink/10 bg-porcelain p-6 sm:p-8">

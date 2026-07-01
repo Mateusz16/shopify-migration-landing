@@ -1,13 +1,5 @@
 ---
-import { fetchSingleton } from '../lib/sanity/content';
-import { siteSettingsQuery } from '../lib/sanity/queries';
-import { siteSettingsDefault } from '../lib/sanity/defaults';
-
 const year = new Date().getFullYear();
-const siteSettings = await fetchSingleton(siteSettingsQuery, siteSettingsDefault);
-const { brandLabel, footerTagline, footerNote, contactEmail } = siteSettings;
-const [brandName, ...brandRest] = brandLabel.split('/');
-const brandSuffix = brandRest.length > 0 ? brandRest.join('/') : '';
 ---
 
 <footer class="border-t border-ink/10 bg-ink text-porcelain/80">
@@ -15,10 +7,11 @@ const brandSuffix = brandRest.length > 0 ? brandRest.join('/') : '';
     <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
       <div>
         <p class="font-display text-lg font-semibold text-porcelain">
-          {brandName}{brandSuffix && <><span class="text-signal">/</span>{brandSuffix}</>}
+          Klawitter<span class="text-signal">/</span>Shopify
         </p>
         <p class="mt-2 max-w-sm text-sm leading-relaxed text-porcelain/60">
-          {footerTagline}
+          Migracje sklepów e-commerce do Shopify. Jeden zespół, ograniczona
+          liczba klientów jednocześnie.
         </p>
       </div>
 
@@ -30,15 +23,15 @@ const brandSuffix = brandRest.length > 0 ? brandRest.join('/') : '';
       </div>
 
       <div class="text-sm">
-        <a href={`mailto:${contactEmail}`} class="font-mono text-porcelain hover:text-signal">
-          {contactEmail}
+        <a href="mailto:kontakt@matklawitter.com" class="font-mono text-porcelain hover:text-signal">
+          kontakt@matklawitter.com
         </a>
       </div>
     </div>
 
     <div class="mt-10 flex flex-col gap-2 border-t border-porcelain/10 pt-6 text-xs text-porcelain/40 sm:flex-row sm:items-center sm:justify-between">
       <p>© {year} Mateusz Klawitter. Wszystkie prawa zastrzeżone.</p>
-      <p>{footerNote}</p>
+      <p>Zaprojektowane i zbudowane od zera — bez szablonu.</p>
     </div>
   </div>
 </footer>
