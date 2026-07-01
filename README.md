@@ -23,6 +23,8 @@ domeny root ustawiany jest ręcznie w Cloudflare Redirect Rules.
 
 ```
 src/
+├── assets/
+│   └── images/          zdjęcia na stronę (patrz "Dodawanie zdjęć" niżej)
 ├── components/         komponenty sekcji (Header, Hero, DiagnosticPanel, ...)
 ├── content/
 │   └── case-studies/    wpisy Markdown case studies
@@ -81,6 +83,14 @@ Plik `src/content/case-studies/przyklad-sklep-demo.md` to placeholder z
 fikcyjnymi danymi (`isPlaceholder: true`) — pokazuje render karty case study.
 **Usuń go**, gdy dojdzie pierwszy prawdziwy wpis, albo zostaw z jasnym
 oznaczeniem, jeśli chcesz zachować go jako przykład.
+
+## Dodawanie zdjęć
+
+Zdjęcia trzymamy lokalnie w repo, w `src/assets/images/` — Astro automatycznie
+je optymalizuje przy buildzie (kompresja, właściwe rozmiary, lazy-loading),
+bez potrzeby żadnego zewnętrznego serwisu czy konta. Pełna instrukcja (w tym
+jak wgrać plik przez przeglądarkę na GitHubie, bez terminala) jest w
+[src/assets/images/README.md](src/assets/images/README.md).
 
 ## Deploy — Cloudflare Pages
 
