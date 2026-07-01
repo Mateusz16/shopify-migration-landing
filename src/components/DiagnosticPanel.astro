@@ -1,93 +1,118 @@
 ---
-interface ChartData {
+// Panel "audytowy" w Hero — dwa kafelki stat + sparkline (wartości ilustracyjne,
+// co jasno komunikuje przypis na dole karty).
+interface StatTile {
   label: string;
-  current: string;
-  delta: string;
-  deltaTone: 'mint' | 'signal';
+  value: string;
+  caption: string;
+  color: string;
   linePath: string;
   areaPath: string;
+  endX: number;
+  endY: number;
 }
 
-const charts: ChartData[] = [
+const SURFACE = '#171b21';
+
+const tiles: StatTile[] = [
   {
     label: 'Koszt utrzymania IT (rocznie)',
-    current: '-38%',
-    delta: 'niżej niż na starej platformie',
-    deltaTone: 'signal',
-    linePath: 'M10,12 L65,32.4 L120,49.8 L175,64.4 L230,76',
-    areaPath: 'M10,12 L65,32.4 L120,49.8 L175,64.4 L230,76 L230,88 L10,88 Z',
+    value: '-38%',
+    caption: 'niżej niż na starej platformie',
+    color: '#3452ff',
+    linePath: 'M10,22 L52,30 L94,42 L136,48 L178,62 L230,76',
+    areaPath: 'M10,22 L52,30 L94,42 L136,48 L178,62 L230,76 L230,92 L10,92 Z',
+    endX: 230,
+    endY: 76,
   },
   {
-    label: 'Konwersja',
-    current: '+72%',
-    delta: 'wzrost po migracji',
-    deltaTone: 'mint',
-    linePath: 'M10,76 L65,60 L120,47.56 L175,31.56 L230,12',
-    areaPath: 'M10,76 L65,60 L120,47.56 L175,31.56 L230,12 L230,88 L10,88 Z',
+    label: 'Konwersja w checkoucie',
+    value: '+72%',
+    caption: 'wzrost po migracji',
+    color: '#1f9d6c',
+    linePath: 'M10,78 L52,70 L94,64 L136,50 L178,38 L230,20',
+    areaPath: 'M10,78 L52,70 L94,64 L136,50 L178,38 L230,20 L230,92 L10,92 Z',
+    endX: 230,
+    endY: 20,
   },
 ];
 ---
 
 <div class="reveal relative">
   <div
-    class="relative overflow-hidden rounded-lg border border-white/10 bg-ink p-6 text-porcelain shadow-[0_30px_60px_-25px_rgba(20,23,28,0.55)] sm:p-8"
+    class="pointer-events-none absolute -inset-6 rounded-[2rem] bg-signal/[0.06] blur-2xl"
+    aria-hidden="true"
   >
-    <div class="bg-grid pointer-events-none absolute inset-0 text-white/[0.06]" aria-hidden="true"></div>
+  </div>
 
-    <span class="absolute left-4 top-4 h-3 w-3 border-l-2 border-t-2 border-mint/60" aria-hidden="true"></span>
-    <span class="absolute right-4 top-4 h-3 w-3 border-r-2 border-t-2 border-mint/60" aria-hidden="true"></span>
-    <span class="absolute bottom-4 left-4 h-3 w-3 border-b-2 border-l-2 border-mint/60" aria-hidden="true"></span>
-    <span class="absolute bottom-4 right-4 h-3 w-3 border-b-2 border-r-2 border-mint/60" aria-hidden="true"></span>
+  <div
+    class="relative overflow-hidden rounded-lg border border-white/10 bg-[linear-gradient(180deg,#1b2027,#14171c)] text-porcelain shadow-[0_40px_80px_-35px_rgba(20,23,28,0.7)]"
+  >
+    <div class="bg-grid pointer-events-none absolute inset-0 text-white/[0.05]" aria-hidden="true"></div>
 
-    <div class="relative flex items-center justify-between border-b border-white/10 pb-4">
-      <p class="font-mono text-xs uppercase tracking-[0.25em] text-porcelain/60">
-        Diagnostyka // przed i po migracji
-      </p>
-      <span class="flex items-center gap-2 font-mono text-xs text-mint">
+    <div class="relative flex items-center justify-between border-b border-white/10 px-5 py-3.5 sm:px-6">
+      <span class="flex items-center gap-1.5" aria-hidden="true">
+        <span class="h-2.5 w-2.5 rounded-full bg-ember/70"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-porcelain/25"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-mint/70"></span>
+      </span>
+      <span class="font-mono text-[11px] tracking-wide text-porcelain/50">raport-audytu.log</span>
+      <span class="flex items-center gap-2 font-mono text-[11px] text-mint">
         <span class="h-1.5 w-1.5 rounded-full bg-mint" aria-hidden="true"></span>
         model referencyjny
       </span>
     </div>
 
-    <div class="relative mt-6 grid gap-6 sm:grid-cols-2">
+    <div class="relative grid gap-7 p-5 sm:grid-cols-2 sm:gap-6 sm:p-6">
       {
-        charts.map((chart) => (
+        tiles.map((tile) => (
           <div class="flex flex-col gap-3">
-            <p class="text-xs text-porcelain/60">{chart.label}</p>
-            <svg viewBox="0 0 240 96" class="w-full" role="img" aria-label={`${chart.label}: ${chart.current}`}>
+            <p class="text-xs text-porcelain/60">{tile.label}</p>
+            <svg viewBox="0 0 240 100" class="w-full" role="img" aria-label={`${tile.label}: ${tile.value} — ${tile.caption}`}>
               <defs>
-                <linearGradient id={`gradient-${chart.deltaTone}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color={chart.deltaTone === 'mint' ? '#1f9d6c' : '#3452ff'} stop-opacity="0.35" />
-                  <stop offset="100%" stop-color={chart.deltaTone === 'mint' ? '#1f9d6c' : '#3452ff'} stop-opacity="0" />
+                <linearGradient id={`area-${tile.endY}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color={tile.color} stop-opacity="0.18" />
+                  <stop offset="100%" stop-color={tile.color} stop-opacity="0" />
                 </linearGradient>
               </defs>
-              <path d={chart.areaPath} fill={`url(#gradient-${chart.deltaTone})`} stroke="none" />
+              <g stroke="rgba(255,255,255,0.06)" stroke-width="1" aria-hidden="true">
+                <line x1="10" y1="28" x2="230" y2="28" />
+                <line x1="10" y1="52" x2="230" y2="52" />
+                <line x1="10" y1="76" x2="230" y2="76" />
+              </g>
+              <path d={tile.areaPath} fill={`url(#area-${tile.endY})`} stroke="none" />
               <path
-                d={chart.linePath}
+                d={tile.linePath}
                 fill="none"
-                stroke={chart.deltaTone === 'mint' ? '#1f9d6c' : '#3452ff'}
-                stroke-width="2.5"
+                stroke={tile.color}
+                stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 pathLength="1"
                 class="chart-line"
               />
+              <circle cx={tile.endX} cy={tile.endY} r="4.5" fill={tile.color} stroke={SURFACE} stroke-width="2" class="chart-dot" />
             </svg>
-            <p class="flex items-baseline gap-2">
-              <span class:list={['font-mono text-xl font-semibold tabular-nums', chart.deltaTone === 'mint' ? 'text-mint' : 'text-signal-soft']}>
-                {chart.current}
-              </span>
-              <span class="text-xs text-porcelain/50">{chart.delta}</span>
+            <p class="flex items-baseline gap-2.5">
+              <span class="h-2 w-2 shrink-0 self-center rounded-full" style={`background-color: ${tile.color}`} aria-hidden="true"></span>
+              <span class="font-mono text-2xl font-semibold text-porcelain">{tile.value}</span>
+              <span class="text-xs leading-snug text-porcelain/50">{tile.caption}</span>
             </p>
           </div>
         ))
       }
     </div>
 
-    <p class="relative mt-6 border-t border-white/10 pt-4 font-mono text-[11px] leading-relaxed text-porcelain/40">
-      Wartości ilustracyjne — typowy zakres poprawy na bazie audytów sklepów
-      WooCommerce/PrestaShop migrowanych na Shopify. Realne liczby Twojego
-      sklepu poznasz po audycie.
-    </p>
+    <div class="relative border-t border-white/10 px-5 py-4 sm:px-6">
+      <p class="font-mono text-xs text-porcelain/70">
+        <span class="text-mint">$</span> audyt sklepu → wycena w 3–7 dni
+        <span class="cursor-blink ml-1 inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em] bg-porcelain/70" aria-hidden="true"></span>
+      </p>
+      <p class="mt-3 font-mono text-[11px] leading-relaxed text-porcelain/40">
+        Wartości ilustracyjne — typowy zakres poprawy na bazie audytów sklepów
+        WooCommerce/PrestaShop migrowanych na Shopify. Realne liczby Twojego
+        sklepu poznasz po audycie.
+      </p>
+    </div>
   </div>
 </div>
