@@ -1,7 +1,9 @@
 ---
-// Ilustracja w Hero — bez karty/tła, w duchu "grafiki inżynierskiej": grube wstęgi
-// z fakturą i gradientem zamiast cienkich linii wykresu, plus małe węzły-ikony
-// zawieszone na cienkich łącznikach (inspiracja: hero Feldera, nie kopia 1:1).
+// Ilustracja w Hero — pełna szerokość strony, bez karty/tła, w duchu "grafiki
+// inżynierskiej": grube wstęgi z fakturą i gradientem zamiast cienkich linii
+// wykresu, plus małe węzły-ikony zawieszone na cienkich łącznikach
+// (inspiracja: hero Feldera, nie kopia 1:1). Szeroki, płaski kadr (baner)
+// pozwala wstęgom biec łagodnymi łukami zamiast ucinać się na krawędziach.
 //
 // Trzy wstęgi = trzy kierunki, bez liczb:
 // - sygnał (niebieski)  — główna "linia procesu" (konwersja), biegnie w miarę stabilnie
@@ -24,14 +26,14 @@ interface Ribbon {
   points: Point[];
 }
 
-const VB_X = -80;
+const VB_X = -60;
 const VB_Y = 0;
-const VB_W = 1060;
-const VB_H = 560;
+const VB_W = 1520;
+const VB_H = 520;
 
 // Wspólna siatka X dla wszystkich wstęg — dzięki temu węzły-ikony mogą się
 // podpinać dokładnie w punktach kotwiczących (bez interpolacji).
-const X = [-80, 120, 340, 560, 780, 980];
+const X = [-60, 280, 620, 900, 1180, 1460];
 
 const ribbons: Ribbon[] = [
   {
@@ -40,15 +42,15 @@ const ribbons: Ribbon[] = [
     colorTo: '#3452ff',
     opacityFrom: 0.55,
     opacityTo: 0.95,
-    width: 34,
+    width: 40,
     delay: 0.15,
     points: [
-      { x: X[0], y: 300 },
-      { x: X[1], y: 292 },
-      { x: X[2], y: 270 },
-      { x: X[3], y: 236 },
-      { x: X[4], y: 206 },
-      { x: X[5], y: 188 },
+      { x: X[0], y: 290 },
+      { x: X[1], y: 280 },
+      { x: X[2], y: 260 },
+      { x: X[3], y: 235 },
+      { x: X[4], y: 210 },
+      { x: X[5], y: 190 },
     ],
   },
   {
@@ -57,15 +59,15 @@ const ribbons: Ribbon[] = [
     colorTo: '#e8641b',
     opacityFrom: 0.9,
     opacityTo: 0.3,
-    width: 24,
+    width: 28,
     delay: 0,
     points: [
       { x: X[0], y: 210 },
       { x: X[1], y: 240 },
-      { x: X[2], y: 300 },
-      { x: X[3], y: 380 },
-      { x: X[4], y: 450 },
-      { x: X[5], y: 510 },
+      { x: X[2], y: 290 },
+      { x: X[3], y: 330 },
+      { x: X[4], y: 360 },
+      { x: X[5], y: 385 },
     ],
   },
   {
@@ -74,16 +76,16 @@ const ribbons: Ribbon[] = [
     colorTo: '#1f9d6c',
     opacityFrom: 0.6,
     opacityTo: 1,
-    width: 40,
+    width: 54,
     delay: 0.3,
     hero: true,
     points: [
-      { x: X[0], y: 400 },
-      { x: X[1], y: 360 },
-      { x: X[2], y: 270 },
-      { x: X[3], y: 150 },
-      { x: X[4], y: 60 },
-      { x: X[5], y: 10 },
+      { x: X[0], y: 370 },
+      { x: X[1], y: 330 },
+      { x: X[2], y: 255 },
+      { x: X[3], y: 165 },
+      { x: X[4], y: 105 },
+      { x: X[5], y: 70 },
     ],
   },
 ];
@@ -114,7 +116,7 @@ const nodes = [
   {
     id: 'hex',
     anchor: { x: X[3], y: przychod.points[3].y },
-    center: { x: X[3], y: przychod.points[3].y - 110 },
+    center: { x: X[3], y: przychod.points[3].y - 100 },
     r: 34,
     color: '#1f9d6c',
     delay: 1.1,
@@ -138,8 +140,8 @@ const nodes = [
 ];
 
 // Prosta linia adnotacji — biegnie mniej więcej wzdłuż głównej wstęgi (konwersji).
-const annoStart = { x: 140, y: 290 };
-const annoEnd = { x: 860, y: 199 };
+const annoStart = { x: 300, y: 279 };
+const annoEnd = { x: 1300, y: 201 };
 const annoAngle = (Math.atan2(annoEnd.y - annoStart.y, annoEnd.x - annoStart.x) * 180) / Math.PI;
 const annoArrowT = 0.78;
 const annoArrowPoint = {
@@ -152,15 +154,10 @@ const ariaLabel =
 ---
 
 <div
-  class="reveal py-4 sm:py-10 lg:py-14"
-  style="mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);"
+  class="reveal py-8 sm:py-10"
+  style="mask-image: linear-gradient(to right, transparent 0, black 40px, black calc(100% - 40px), transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0, black 40px, black calc(100% - 40px), transparent 100%);"
 >
-  <svg
-    viewBox={`${VB_X} ${VB_Y} ${VB_W} ${VB_H}`}
-    class="w-full max-w-2xl mx-auto lg:max-w-none"
-    role="img"
-    aria-label={ariaLabel}
-  >
+  <svg viewBox={`${VB_X} ${VB_Y} ${VB_W} ${VB_H}`} class="w-full" role="img" aria-label={ariaLabel}>
     <defs>
       {
         ribbons.map((r) => (
