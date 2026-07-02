@@ -25,7 +25,7 @@ domeny root ustawiany jest ręcznie w Cloudflare Redirect Rules.
 src/
 ├── assets/
 │   └── images/          zdjęcia na stronę (patrz "Dodawanie zdjęć" niżej)
-├── components/         komponenty sekcji (Header, Hero, DiagnosticPanel, ...)
+├── components/         komponenty sekcji (Header, Hero, TrendIllustration, ...)
 ├── content/
 │   └── case-studies/    wpisy Markdown case studies
 ├── content.config.ts    schema Zod dla kolekcji case-studies

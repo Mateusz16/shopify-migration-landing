@@ -1,0 +1,188 @@
+---
+// Ilustracja w Hero — bez karty/tła, sama grafika. Trzy krzywe pokazują kierunek,
+// nie liczby: utrzymanie techniczne spada, konwersja i przychód rosną (przychód
+// najmocniej, bo to efekt końcowy). Linie rysują się przy wejściu w viewport
+// (patrz .chart-line / .chart-dot w global.css) i delikatnie żyją dalej (pulse).
+interface Trend {
+  id: string;
+  label: string;
+  color: string;
+  points: { x: number; y: number }[];
+  strokeWidth: number;
+  delay: number;
+  labelAlign: 'above' | 'below';
+}
+
+const WIDTH = 640;
+const HEIGHT = 520;
+
+const trends: Trend[] = [
+  {
+    id: 'utrzymanie',
+    label: 'Utrzymanie techniczne',
+    color: '#e8641b',
+    strokeWidth: 3,
+    delay: 0,
+    labelAlign: 'above',
+    points: [
+      { x: 30, y: 80 },
+      { x: 175, y: 130 },
+      { x: 320, y: 220 },
+      { x: 465, y: 300 },
+      { x: 610, y: 350 },
+    ],
+  },
+  {
+    id: 'konwersja',
+    label: 'Konwersja',
+    color: '#3452ff',
+    strokeWidth: 4,
+    delay: 0.25,
+    labelAlign: 'above',
+    points: [
+      { x: 30, y: 260 },
+      { x: 175, y: 220 },
+      { x: 320, y: 190 },
+      { x: 465, y: 130 },
+      { x: 610, y: 100 },
+    ],
+  },
+  {
+    id: 'przychod',
+    label: 'Przychód',
+    color: '#1f9d6c',
+    strokeWidth: 5.5,
+    delay: 0.5,
+    labelAlign: 'below',
+    points: [
+      { x: 30, y: 440 },
+      { x: 175, y: 380 },
+      { x: 320, y: 260 },
+      { x: 465, y: 120 },
+      { x: 610, y: 40 },
+    ],
+  },
+];
+
+const toLinePath = (points: Trend['points']) =>
+  points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+
+const toAreaPath = (points: Trend['points']) =>
+  `${toLinePath(points)} L${points[points.length - 1].x},${HEIGHT} L${points[0].x},${HEIGHT} Z`;
+
+const ariaLabel = `${trends[0].label}: kierunek spadkowy. ${trends[1].label}: kierunek wzrostowy. ${trends[2].label}: kierunek wzrostowy, najmocniej.`;
+---
+
+<div class="reveal py-4 sm:py-10 lg:py-14">
+  <svg
+    viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+    class="w-full max-w-xl mx-auto lg:max-w-none"
+    role="img"
+    aria-label={ariaLabel}
+  >
+    <defs>
+      {
+        trends.map((t) => (
+          <linearGradient id={`trend-area-${t.id}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color={t.color} stop-opacity="0.16" />
+            <stop offset="100%" stop-color={t.color} stop-opacity="0" />
+          </linearGradient>
+        ))
+      }
+      {
+        trends.map((t) => (
+          <marker
+            id={`trend-arrow-${t.id}`}
+            viewBox="0 0 10 10"
+            markerWidth="8"
+            markerHeight="8"
+            refX="8.5"
+            refY="5"
+            orient="auto"
+          >
+            <path d="M0,0 L10,5 L0,10 Z" fill={t.color} />
+          </marker>
+        ))
+      }
+      <filter id="trend-glow" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="7" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+
+    {
+      trends.map((t) => (
+        <g>
+          <path d={toAreaPath(t.points)} fill={`url(#trend-area-${t.id})`} stroke="none" aria-hidden="true" />
+          {t.id === 'przychod' && (
+            <path
+              d={toLinePath(t.points)}
+              fill="none"
+              stroke={t.color}
+              stroke-width={t.strokeWidth + 3}
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              pathLength="1"
+              class="chart-line"
+              style={`transition-delay: ${0.2 + t.delay}s; opacity: 0.35`}
+              filter="url(#trend-glow)"
+              aria-hidden="true"
+            />
+          )}
+          <path
+            d={toLinePath(t.points)}
+            fill="none"
+            stroke={t.color}
+            stroke-width={t.strokeWidth}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            marker-end={`url(#trend-arrow-${t.id})`}
+            pathLength="1"
+            class="chart-line"
+            style={`transition-delay: ${0.2 + t.delay}s`}
+            aria-hidden="true"
+          />
+          <circle
+            cx={t.points[t.points.length - 1].x}
+            cy={t.points[t.points.length - 1].y}
+            r="9"
+            fill="none"
+            stroke={t.color}
+            stroke-width="2"
+            class="chart-dot trend-pulse"
+            style={`transition-delay: ${1.4 + t.delay}s; animation-delay: ${1.6 + t.delay}s`}
+            aria-hidden="true"
+          />
+          <circle
+            cx={t.points[0].x}
+            cy={t.points[0].y}
+            r="5"
+            fill={t.color}
+            class="chart-dot"
+            style={`transition-delay: ${0.1 + t.delay}s`}
+            aria-hidden="true"
+          />
+        </g>
+      ))
+    }
+
+    <g font-family="var(--font-display)" font-size="16" font-weight="600">
+      {
+        trends.map((t) => (
+          <text
+            x={t.points[0].x}
+            y={t.labelAlign === 'above' ? t.points[0].y - 18 : t.points[0].y + 28}
+            fill={t.color}
+            class="chart-dot"
+            style={`transition-delay: ${1 + t.delay}s`}
+          >
+            {t.label}
+          </text>
+        ))
+      }
+    </g>
+  </svg>
+</div>

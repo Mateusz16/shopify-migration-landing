@@ -175,6 +175,29 @@
     }
   }
 
+  /* Rozchodzący się pierścień na końcu linii trendu — ciągła, ambientowa animacja (Hero) */
+  @keyframes pulse-ring-svg {
+    0% {
+      r: 7;
+      opacity: 0.6;
+    }
+    100% {
+      r: 20;
+      opacity: 0;
+    }
+  }
+
+  .trend-pulse {
+    animation: pulse-ring-svg 2.6s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+    transform-origin: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trend-pulse {
+      animation: none;
+    }
+  }
+
   /* Subtelna siatka w tle — Hero i panel diagnostyczny */
   .bg-grid {
     background-image:
