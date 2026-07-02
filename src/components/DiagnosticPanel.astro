@@ -1,41 +1,70 @@
 ---
-// Panel "audytowy" w Hero — dwa kafelki stat + sparkline (wartości ilustracyjne,
-// co jasno komunikuje przypis na dole karty).
-interface StatTile {
+// Panel "wyników" w Hero — jeden wykres z dwiema seriami (koszt w dół, konwersja w górę),
+// w stylistyce jasnego panelu admina (a la Shopify), z przypisem o wartościach ilustracyjnych.
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Series {
+  id: string;
   label: string;
   value: string;
   caption: string;
   color: string;
-  linePath: string;
-  areaPath: string;
-  endX: number;
-  endY: number;
+  points: Point[];
 }
 
-const SURFACE = '#171b21';
+const CHART_WIDTH = 600;
+const CHART_HEIGHT = 220;
+const PAD_X = 24;
+const BASELINE_Y = 186;
+const AXIS_LABEL_Y = 210;
+const GRID_Y = [36, 79, 122, 165];
+const MONTHS = ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie'];
 
-const tiles: StatTile[] = [
+const series: Series[] = [
   {
+    id: 'koszt',
     label: 'Koszt utrzymania IT (rocznie)',
     value: '-38%',
     caption: 'niżej niż na starej platformie',
     color: '#3452ff',
-    linePath: 'M10,22 L52,30 L94,42 L136,48 L178,62 L230,76',
-    areaPath: 'M10,22 L52,30 L94,42 L136,48 L178,62 L230,76 L230,92 L10,92 Z',
-    endX: 230,
-    endY: 76,
+    points: [
+      { x: 24, y: 66 },
+      { x: 106, y: 60 },
+      { x: 188, y: 78 },
+      { x: 270, y: 92 },
+      { x: 352, y: 86 },
+      { x: 434, y: 112 },
+      { x: 516, y: 122 },
+      { x: 576, y: 136 },
+    ],
   },
   {
+    id: 'konwersja',
     label: 'Konwersja w checkoucie',
     value: '+72%',
     caption: 'wzrost po migracji',
     color: '#1f9d6c',
-    linePath: 'M10,78 L52,70 L94,64 L136,50 L178,38 L230,20',
-    areaPath: 'M10,78 L52,70 L94,64 L136,50 L178,38 L230,20 L230,92 L10,92 Z',
-    endX: 230,
-    endY: 20,
+    points: [
+      { x: 24, y: 170 },
+      { x: 106, y: 158 },
+      { x: 188, y: 150 },
+      { x: 270, y: 128 },
+      { x: 352, y: 106 },
+      { x: 434, y: 86 },
+      { x: 516, y: 56 },
+      { x: 576, y: 36 },
+    ],
   },
 ];
+
+const toLinePath = (points: Point[]) =>
+  points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+
+const toAreaPath = (points: Point[]) =>
+  `${toLinePath(points)} L${points[points.length - 1].x},${BASELINE_Y} L${points[0].x},${BASELINE_Y} Z`;
 ---
 
 <div class="reveal relative">
@@ -46,69 +75,96 @@ const tiles: StatTile[] = [
   </div>
 
   <div
-    class="relative overflow-hidden rounded-lg border border-white/10 bg-[linear-gradient(180deg,#1b2027,#14171c)] text-porcelain shadow-[0_40px_80px_-35px_rgba(20,23,28,0.7)]"
+    class="relative overflow-hidden rounded-2xl border border-ink/10 bg-porcelain shadow-[0_40px_80px_-35px_rgba(20,23,28,0.25)]"
   >
-    <div class="bg-grid pointer-events-none absolute inset-0 text-white/[0.05]" aria-hidden="true"></div>
-
-    <div class="relative flex items-center justify-between border-b border-white/10 px-5 py-3.5 sm:px-6">
-      <span class="flex items-center gap-1.5" aria-hidden="true">
-        <span class="h-2.5 w-2.5 rounded-full bg-ember/70"></span>
-        <span class="h-2.5 w-2.5 rounded-full bg-porcelain/25"></span>
-        <span class="h-2.5 w-2.5 rounded-full bg-mint/70"></span>
-      </span>
-      <span class="font-mono text-[11px] tracking-wide text-porcelain/50">raport-audytu.log</span>
-      <span class="flex items-center gap-2 font-mono text-[11px] text-mint">
-        <span class="h-1.5 w-1.5 rounded-full bg-mint" aria-hidden="true"></span>
-        model referencyjny
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-ink/10 px-6 py-4 sm:px-7">
+      <div>
+        <p class="font-display text-base font-semibold text-ink">Wyniki po migracji</p>
+        <p class="mt-0.5 text-xs text-ink-soft/60">Model referencyjny — 8 miesięcy od wdrożenia</p>
+      </div>
+      <span class="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-canvas px-3 py-1 font-mono text-[11px] text-ink-soft">
+        <span class="status-dot relative h-1.5 w-1.5 rounded-full bg-mint text-mint" aria-hidden="true"></span>
+        na żywo
       </span>
     </div>
 
-    <div class="relative grid gap-7 p-5 sm:grid-cols-2 sm:gap-6 sm:p-6">
+    <div class="grid gap-4 border-b border-ink/10 px-6 py-4 sm:grid-cols-2 sm:px-7">
       {
-        tiles.map((tile) => (
-          <div class="flex flex-col gap-3">
-            <p class="text-xs text-porcelain/60">{tile.label}</p>
-            <svg viewBox="0 0 240 100" class="w-full" role="img" aria-label={`${tile.label}: ${tile.value} — ${tile.caption}`}>
-              <defs>
-                <linearGradient id={`area-${tile.endY}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color={tile.color} stop-opacity="0.18" />
-                  <stop offset="100%" stop-color={tile.color} stop-opacity="0" />
-                </linearGradient>
-              </defs>
-              <g stroke="rgba(255,255,255,0.06)" stroke-width="1" aria-hidden="true">
-                <line x1="10" y1="28" x2="230" y2="28" />
-                <line x1="10" y1="52" x2="230" y2="52" />
-                <line x1="10" y1="76" x2="230" y2="76" />
-              </g>
-              <path d={tile.areaPath} fill={`url(#area-${tile.endY})`} stroke="none" />
-              <path
-                d={tile.linePath}
-                fill="none"
-                stroke={tile.color}
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                pathLength="1"
-                class="chart-line"
-              />
-              <circle cx={tile.endX} cy={tile.endY} r="4.5" fill={tile.color} stroke={SURFACE} stroke-width="2" class="chart-dot" />
-            </svg>
-            <p class="flex items-baseline gap-2.5">
-              <span class="h-2 w-2 shrink-0 self-center rounded-full" style={`background-color: ${tile.color}`} aria-hidden="true"></span>
-              <span class="font-mono text-2xl font-semibold text-porcelain">{tile.value}</span>
-              <span class="text-xs leading-snug text-porcelain/50">{tile.caption}</span>
-            </p>
+        series.map((s) => (
+          <div class="flex items-baseline gap-2.5">
+            <span class="h-2.5 w-2.5 shrink-0 self-center rounded-full" style={`background-color: ${s.color}`} aria-hidden="true" />
+            <span class="font-mono text-2xl font-semibold text-ink">{s.value}</span>
+            <span class="text-xs leading-snug text-ink-soft/60">{s.caption}</span>
           </div>
         ))
       }
     </div>
 
-    <div class="relative border-t border-white/10 px-5 py-4 sm:px-6">
-      <p class="font-mono text-xs text-porcelain/70">
-        <span class="text-mint">$</span> audyt sklepu → wycena w 3–7 dni
-        <span class="cursor-blink ml-1 inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em] bg-porcelain/70" aria-hidden="true"></span>
-      </p>
-      <p class="mt-3 font-mono text-[11px] leading-relaxed text-porcelain/40">
+    <div class="px-3 pb-2 pt-5 sm:px-5">
+      <svg
+        viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+        class="w-full"
+        role="img"
+        aria-label={`${series[0].label}: ${series[0].value} ${series[0].caption}. ${series[1].label}: ${series[1].value} ${series[1].caption}.`}
+      >
+        <defs>
+          {
+            series.map((s) => (
+              <linearGradient id={`area-${s.id}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color={s.color} stop-opacity="0.16" />
+                <stop offset="100%" stop-color={s.color} stop-opacity="0" />
+              </linearGradient>
+            ))
+          }
+        </defs>
+
+        <g stroke="rgba(20,23,28,0.08)" stroke-width="1" aria-hidden="true">
+          {GRID_Y.map((y) => <line x1={PAD_X} y1={y} x2={CHART_WIDTH - PAD_X} y2={y} />)}
+        </g>
+
+        {
+          series.map((s) => (
+            <g>
+              <path d={toAreaPath(s.points)} fill={`url(#area-${s.id})`} stroke="none" />
+              <path
+                d={toLinePath(s.points)}
+                fill="none"
+                stroke={s.color}
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                pathLength="1"
+                class="chart-line"
+              />
+              {s.points.slice(0, -1).map((p) => (
+                <circle cx={p.x} cy={p.y} r="2.5" fill={s.color} opacity="0.45" />
+              ))}
+              <circle
+                cx={s.points[s.points.length - 1].x}
+                cy={s.points[s.points.length - 1].y}
+                r="5"
+                fill={s.color}
+                stroke="#faf9f5"
+                stroke-width="2.5"
+                class="chart-dot"
+              />
+            </g>
+          ))
+        }
+
+        <g font-family="var(--font-mono)" font-size="11" fill="rgba(20,23,28,0.4)">
+          {MONTHS.map((m, i) => (
+            <text x={series[0].points[i].x} y={AXIS_LABEL_Y} text-anchor="middle">
+              {m}
+            </text>
+          ))}
+        </g>
+      </svg>
+    </div>
+
+    <div class="border-t border-ink/10 px-6 py-4 sm:px-7">
+      <p class="text-sm font-medium text-ink">Audyt sklepu → wycena w 3–7 dni</p>
+      <p class="mt-2 font-mono text-[11px] leading-relaxed text-ink-soft/45">
         Wartości ilustracyjne — typowy zakres poprawy na bazie audytów sklepów
         WooCommerce/PrestaShop migrowanych na Shopify. Realne liczby Twojego
         sklepu poznasz po audycie.
