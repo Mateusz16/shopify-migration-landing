@@ -198,6 +198,23 @@
     }
   }
 
+  /* Maszerujące kreski na linii adnotacji — sugerują ciągły przepływ danych (Hero) */
+  @keyframes dash-flow {
+    to {
+      stroke-dashoffset: -34;
+    }
+  }
+
+  .anno-flow {
+    animation: dash-flow 2.4s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anno-flow {
+      animation: none;
+    }
+  }
+
   /* Subtelna siatka w tle — Hero i panel diagnostyczny */
   .bg-grid {
     background-image:
