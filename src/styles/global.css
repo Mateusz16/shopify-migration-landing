@@ -8,12 +8,14 @@
 @import '@fontsource/inter/600.css';
 @import '@fontsource/jetbrains-mono/400.css';
 @import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/lora/600.css';
+@import '@fontsource/lora/600-italic.css';
 
 /*
   System designu — Shopify migration landing.
 
   ink       — tekst / tła techniczne (panel diagnostyczny, stopka)
-  canvas    — tło strony, ciepła, przydymiona biel (nie "kremowa")
+  canvas    — tło strony, jednolita przydymiona szarość (bez gradientów)
   porcelain — powierzchnie kart, jaśniejsze od canvas
   signal    — akcent marki: CTA, linki, focus ring
   ember     — dane "przed" w panelu diagnostycznym (ciepły, ostrzegawczy)
@@ -22,7 +24,7 @@
 @theme {
   --color-ink: #14171c;
   --color-ink-soft: #2a2f38;
-  --color-canvas: #f2f0e9;
+  --color-canvas: #e7e6e2;
   --color-porcelain: #faf9f5;
   --color-signal: #3452ff;
   --color-signal-soft: #dbe1ff;
@@ -34,6 +36,7 @@
   --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
   --font-body: 'Inter', 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-accent: 'Lora', 'Georgia', serif;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.625rem;

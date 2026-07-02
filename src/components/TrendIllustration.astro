@@ -37,24 +37,9 @@ const VB_H = 520;
 // tekstem), a ostatnie trzy rozciągnięte szeroko — tam wstęgi się rozjeżdżają.
 const X = [-60, 60, 220, 620, 1000, 1460];
 
+// Kolejność renderowania = kolejność malowania: ostatnia wstęga jest na wierzchu.
+// Konwersja (niebieska) ma leżeć nad przychodem (zielona), więc rysujemy ją jako ostatnią.
 const ribbons: Ribbon[] = [
-  {
-    id: 'konwersja',
-    colorFrom: '#7c8fff',
-    colorTo: '#3452ff',
-    opacityFrom: 0.5,
-    opacityTo: 0.95,
-    width: 34,
-    delay: 0.15,
-    points: [
-      { x: X[0], y: 270 },
-      { x: X[1], y: 268 },
-      { x: X[2], y: 262 },
-      { x: X[3], y: 240 },
-      { x: X[4], y: 205 },
-      { x: X[5], y: 175 },
-    ],
-  },
   {
     id: 'utrzymanie',
     colorFrom: '#e8641b',
@@ -88,6 +73,23 @@ const ribbons: Ribbon[] = [
       { x: X[3], y: 170 },
       { x: X[4], y: 95 },
       { x: X[5], y: 55 },
+    ],
+  },
+  {
+    id: 'konwersja',
+    colorFrom: '#7c8fff',
+    colorTo: '#3452ff',
+    opacityFrom: 0.5,
+    opacityTo: 0.95,
+    width: 34,
+    delay: 0.15,
+    points: [
+      { x: X[0], y: 270 },
+      { x: X[1], y: 268 },
+      { x: X[2], y: 262 },
+      { x: X[3], y: 240 },
+      { x: X[4], y: 205 },
+      { x: X[5], y: 175 },
     ],
   },
 ];
@@ -432,7 +434,7 @@ const ariaLabel =
           ) : (
             <text
               x={n.center.x}
-              y={n.labelPos === 'above' ? n.center.y - n.r - 16 : n.center.y + n.r + 28}
+              y={n.center.y + n.r + 28}
               text-anchor="middle"
               font-family="var(--font-display)"
               font-size="21"
