@@ -118,10 +118,13 @@ const nodes = [
   {
     id: 'hex',
     anchor: { x: X[3], y: przychod.points[3].y },
-    center: { x: X[3], y: przychod.points[3].y - 100 },
+    center: { x: X[3], y: przychod.points[3].y - 80 },
     r: 34,
     color: '#1f9d6c',
     delay: 1.1,
+    number: '2',
+    label: 'Przychód',
+    labelPos: 'right' as const,
   },
   {
     id: 'circle',
@@ -130,6 +133,9 @@ const nodes = [
     r: 40,
     color: '#3452ff',
     delay: 1.3,
+    number: '1',
+    label: 'Konwersja',
+    labelPos: 'below' as const,
   },
   {
     id: 'square',
@@ -138,6 +144,9 @@ const nodes = [
     r: 35,
     color: '#e8641b',
     delay: 1.5,
+    number: '3',
+    label: 'Utrzymanie sklepu',
+    labelPos: 'below' as const,
   },
 ];
 
@@ -406,6 +415,32 @@ const ariaLabel =
                 />
               ))}
             </g>
+          )}
+
+          {n.labelPos === 'right' ? (
+            <text
+              x={n.center.x + n.r + 16}
+              y={n.center.y + 7}
+              text-anchor="start"
+              font-family="var(--font-display)"
+              font-size="21"
+              font-weight="600"
+              fill={n.color}
+            >
+              {n.number}. {n.label}
+            </text>
+          ) : (
+            <text
+              x={n.center.x}
+              y={n.labelPos === 'above' ? n.center.y - n.r - 16 : n.center.y + n.r + 28}
+              text-anchor="middle"
+              font-family="var(--font-display)"
+              font-size="21"
+              font-weight="600"
+              fill={n.color}
+            >
+              {n.number}. {n.label}
+            </text>
           )}
         </g>
       ))
