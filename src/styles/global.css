@@ -195,6 +195,29 @@
     box-shadow: 0 10px 30px -15px rgba(20, 23, 28, 0.3);
   }
 
+  .navbar-avatar {
+    transition:
+      height 0.3s ease,
+      width 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  #navbar-pill.is-scrolled .navbar-avatar {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .navbar-cta {
+    transition:
+      padding 0.3s ease,
+      font-size 0.3s ease;
+  }
+
+  #navbar-pill.is-scrolled .navbar-cta {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
   /* Scrollspy: link sekcji aktualnie widocznej na ekranie */
   .nav-link {
     border-radius: 9999px;
@@ -207,6 +230,77 @@
   .nav-link.nav-active {
     color: var(--color-ink);
     background-color: rgba(20, 23, 28, 0.06);
+  }
+
+  /* Menu mobilne: pojawia się jako overlay z płynnym rozwinięciem i zanikiem */
+  #mobile-nav {
+    transform-origin: top center;
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease,
+      visibility 0s linear 0.25s;
+  }
+
+  #mobile-nav.mobile-nav-open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    visibility: visible;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease,
+      visibility 0s linear 0s;
+  }
+
+  #mobile-nav a {
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  /* Ikona hamburgera: dwie kreski przechodzące płynnie w X */
+  .menu-icon-bar {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: currentColor;
+    transition:
+      transform 0.3s ease,
+      top 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  .menu-icon-bar-top {
+    top: 14px;
+  }
+
+  .menu-icon-bar-bottom {
+    top: 22px;
+  }
+
+  #menu-toggle[aria-expanded='true'] .menu-icon-bar-top {
+    top: 18px;
+    transform: rotate(45deg);
+  }
+
+  #menu-toggle[aria-expanded='true'] .menu-icon-bar-bottom {
+    top: 18px;
+    transform: rotate(-45deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #mobile-nav,
+    #mobile-nav.mobile-nav-open,
+    .menu-icon-bar {
+      transition: none;
+    }
   }
 
   /* Pulsujący status-dot (np. przy CTA) */
