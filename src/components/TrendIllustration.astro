@@ -32,41 +32,43 @@ const VB_W = 1520;
 const VB_H = 520;
 
 // Wspólna siatka X dla wszystkich wstęg — dzięki temu węzły-ikony mogą się
-// podpinać dokładnie w punktach kotwiczących (bez interpolacji).
-const X = [-60, 280, 620, 900, 1180, 1460];
+// podpinać dokładnie w punktach kotwiczących (bez interpolacji). Pierwsze trzy
+// punkty są ściśnięte blisko lewej krawędzi (spokojny "węzeł", bezpieczny pod
+// tekstem), a ostatnie trzy rozciągnięte szeroko — tam wstęgi się rozjeżdżają.
+const X = [-60, 60, 220, 620, 1000, 1460];
 
 const ribbons: Ribbon[] = [
   {
     id: 'konwersja',
     colorFrom: '#7c8fff',
     colorTo: '#3452ff',
-    opacityFrom: 0.55,
+    opacityFrom: 0.5,
     opacityTo: 0.95,
-    width: 40,
+    width: 34,
     delay: 0.15,
     points: [
-      { x: X[0], y: 290 },
-      { x: X[1], y: 280 },
-      { x: X[2], y: 260 },
-      { x: X[3], y: 235 },
-      { x: X[4], y: 210 },
-      { x: X[5], y: 190 },
+      { x: X[0], y: 270 },
+      { x: X[1], y: 268 },
+      { x: X[2], y: 262 },
+      { x: X[3], y: 240 },
+      { x: X[4], y: 205 },
+      { x: X[5], y: 175 },
     ],
   },
   {
     id: 'utrzymanie',
     colorFrom: '#e8641b',
     colorTo: '#e8641b',
-    opacityFrom: 0.9,
+    opacityFrom: 0.85,
     opacityTo: 0.3,
-    width: 28,
+    width: 24,
     delay: 0,
     points: [
-      { x: X[0], y: 210 },
-      { x: X[1], y: 240 },
-      { x: X[2], y: 290 },
-      { x: X[3], y: 330 },
-      { x: X[4], y: 360 },
+      { x: X[0], y: 250 },
+      { x: X[1], y: 255 },
+      { x: X[2], y: 270 },
+      { x: X[3], y: 310 },
+      { x: X[4], y: 350 },
       { x: X[5], y: 385 },
     ],
   },
@@ -74,18 +76,18 @@ const ribbons: Ribbon[] = [
     id: 'przychod',
     colorFrom: '#79c9a2',
     colorTo: '#1f9d6c',
-    opacityFrom: 0.6,
+    opacityFrom: 0.55,
     opacityTo: 1,
-    width: 54,
+    width: 46,
     delay: 0.3,
     hero: true,
     points: [
-      { x: X[0], y: 370 },
-      { x: X[1], y: 330 },
-      { x: X[2], y: 255 },
-      { x: X[3], y: 165 },
-      { x: X[4], y: 105 },
-      { x: X[5], y: 70 },
+      { x: X[0], y: 290 },
+      { x: X[1], y: 278 },
+      { x: X[2], y: 250 },
+      { x: X[3], y: 170 },
+      { x: X[4], y: 95 },
+      { x: X[5], y: 55 },
     ],
   },
 ];
@@ -140,8 +142,8 @@ const nodes = [
 ];
 
 // Prosta linia adnotacji — biegnie mniej więcej wzdłuż głównej wstęgi (konwersji).
-const annoStart = { x: 300, y: 279 };
-const annoEnd = { x: 1300, y: 201 };
+const annoStart = { x: 350, y: 255 };
+const annoEnd = { x: 1300, y: 185 };
 const annoAngle = (Math.atan2(annoEnd.y - annoStart.y, annoEnd.x - annoStart.x) * 180) / Math.PI;
 const annoArrowT = 0.78;
 const annoArrowPoint = {
@@ -149,13 +151,16 @@ const annoArrowPoint = {
   y: annoStart.y + (annoEnd.y - annoStart.y) * annoArrowT,
 };
 
+// Punkt zbiegu wstęg — spokojny "węzeł" blisko lewej krawędzi, bezpieczny pod tekstem.
+const knot = { x: X[0] + 20, y: 268 };
+
 const ariaLabel =
   'Ilustracja: koszt utrzymania technicznego spada, konwersja rośnie stabilnie, przychód rośnie najmocniej.';
 ---
 
 <div
   class="reveal py-8 sm:py-10"
-  style="mask-image: linear-gradient(to right, transparent 0, black 40px, black calc(100% - 40px), transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0, black 40px, black calc(100% - 40px), transparent 100%);"
+  style="mask-image: linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%);"
 >
   <svg viewBox={`${VB_X} ${VB_Y} ${VB_W} ${VB_H}`} class="w-full" role="img" aria-label={ariaLabel}>
     <defs>
@@ -237,6 +242,12 @@ const ariaLabel =
         </g>
       ))
     }
+
+    <!-- węzeł zbiegu: miejsce, z którego "wychodzą" wszystkie trzy wstęgi -->
+    <g class="chart-dot" style="transition-delay: 0.05s" aria-hidden="true">
+      <circle cx={knot.x} cy={knot.y} r="16" fill="none" stroke="var(--color-ink)" stroke-opacity="0.2" stroke-width="1.5" />
+      <circle cx={knot.x} cy={knot.y} r="5" fill="var(--color-ink)" fill-opacity="0.55" />
+    </g>
 
     <!-- linia adnotacji: cienki, technicznie wyglądający ślad na wierzchu wstęg -->
     <g class="chart-dot" style="transition-delay: 1.6s" aria-hidden="true">
