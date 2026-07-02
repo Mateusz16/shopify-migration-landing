@@ -220,16 +220,16 @@
     background-color: rgba(20, 23, 28, 0.06);
   }
 
-  /* Menu mobilne: pojawia się jako overlay z płynnym rozwinięciem i zanikiem */
+  /* Menu mobilne: wyjeżdża z dolnego prawego rogu, znad przycisku FAB */
   #mobile-nav {
-    transform-origin: top center;
+    transform-origin: bottom right;
     opacity: 0;
-    transform: translateY(-6px) scale(0.98);
+    transform: translateY(14px) scale(0.9);
     pointer-events: none;
     visibility: hidden;
     transition:
       opacity 0.25s ease,
-      transform 0.25s ease,
+      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
       visibility 0s linear 0.25s;
   }
 
@@ -240,8 +240,17 @@
     visibility: visible;
     transition:
       opacity 0.25s ease,
-      transform 0.25s ease,
+      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
       visibility 0s linear 0s;
+  }
+
+  /* Pigułka nawigacji chowa się przy scrollu w dół (tylko mobile — na desktopie pozostaje widoczna) */
+  @media (max-width: 1023.98px) {
+    #site-header.nav-hidden {
+      transform: translateY(-130%);
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 
   #mobile-nav a {
