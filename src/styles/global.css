@@ -223,14 +223,14 @@
     background-color: color-mix(in srgb, var(--color-canvas) 96%, transparent);
   }
 
-  /* Na desktopie pigułka dodatkowo kurczy się o ~20% po przewinięciu (patrz Header.astro) */
+  /* Na desktopie pigułka dodatkowo kurczy się o ~12% po przewinięciu (patrz Header.astro) */
   @media (min-width: 1024px) {
     #site-header.is-scrolled {
       padding-top: 0.5rem;
     }
 
     #navbar-pill.is-scrolled {
-      transform: scale(0.8);
+      transform: scale(0.88);
       transform-origin: top center;
       box-shadow: 0 10px 30px -15px rgba(20, 23, 28, 0.3);
     }

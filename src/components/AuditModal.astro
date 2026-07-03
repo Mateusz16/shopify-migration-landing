@@ -1,0 +1,171 @@
+---
+const auditEmail = 'kontakt@matklawitter.com';
+---
+
+<dialog
+  id="audit-modal"
+  aria-labelledby="audit-modal-title"
+  data-audit-email={auditEmail}
+  class="m-auto max-h-[90vh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-lg border-none bg-porcelain p-0 shadow-2xl shadow-ink/20 backdrop:bg-ink/60 backdrop:backdrop-blur-sm"
+>
+  <div class="relative p-6 sm:p-10">
+    <button
+      type="button"
+      data-close-audit-modal
+      aria-label="Zamknij"
+      class="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-ink/5 hover:text-ink"
+    >
+      <span aria-hidden="true" class="text-xl leading-none">&times;</span>
+    </button>
+
+    <div class="grid gap-10 lg:grid-cols-[1.05fr_1fr]">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-signal font-medium">Audyt migracji</p>
+        <h2 id="audit-modal-title" class="mt-3 font-display text-2xl font-semibold text-ink sm:text-3xl">
+          Umów audyt
+        </h2>
+        <p class="mt-4 text-[15px] leading-relaxed text-ink-soft/85">
+          To nie rozmowa sprzedażowa — to analiza Twojego sklepu, po której
+          dostajesz konkretną wycenę i plan migracji, a nie ogólnikową ofertę.
+        </p>
+
+        <dl class="mt-6 grid gap-3 border-t border-ink/10 pt-6">
+          <div class="flex items-start justify-between gap-4">
+            <dt class="font-mono text-xs uppercase tracking-wide text-ink-soft/50">Ile trwa</dt>
+            <dd class="text-right text-sm font-medium text-ink">3–7 dni roboczych</dd>
+          </div>
+          <div class="flex items-start justify-between gap-4">
+            <dt class="font-mono text-xs uppercase tracking-wide text-ink-soft/50">Kiedy się odezwę</dt>
+            <dd class="text-right text-sm font-medium text-ink">W ciągu 24h od zgłoszenia</dd>
+          </div>
+          <div class="flex items-start justify-between gap-4">
+            <dt class="font-mono text-xs uppercase tracking-wide text-ink-soft/50">Ile kosztuje</dt>
+            <dd class="text-right text-sm font-medium text-ink">Zależy od decyzji — patrz niżej</dd>
+          </div>
+        </dl>
+
+        <div class="mt-6">
+          <p class="font-mono text-xs uppercase tracking-wide text-ink-soft/50">Co dostajesz</p>
+          <ul class="mt-3 flex flex-col gap-2 text-sm text-ink-soft/80">
+            <li>— analizę struktury produktów, danych i integracji</li>
+            <li>— audyt SEO i plan przekierowań, zero utraty pozycji</li>
+            <li>— diagnozę wąskich gardeł w checkoucie i UX</li>
+            <li>— konkretną wycenę migracji i plan wdrożenia</li>
+          </ul>
+        </div>
+
+        <div class="mt-6 flex items-start gap-3 rounded-md border border-mint/30 bg-mint/10 p-4">
+          <span class="font-mono text-sm text-mint" aria-hidden="true">!</span>
+          <p class="text-[13px] leading-relaxed text-ink-soft/80">
+            Jeśli po audycie zdecydujesz się na migrację, audyt jest <strong class="text-ink">bezpłatny</strong> —
+            wliczony w koszt projektu. Jeśli się nie zdecydujesz, płacisz za audyt <strong class="text-ink">1000 PLN netto</strong>.
+          </p>
+        </div>
+      </div>
+
+      <form id="audit-form" class="flex flex-col gap-4">
+        <div>
+          <label for="audit-name" class="font-mono text-xs uppercase tracking-wide text-ink-soft/50">Imię i nazwisko</label>
+          <input
+            id="audit-name"
+            name="name"
+            type="text"
+            required
+            class="mt-1.5 w-full rounded-sm border border-ink/15 bg-canvas px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-soft/40 focus:border-signal focus:outline-none"
+            placeholder="Jan Kowalski"
+          />
+        </div>
+        <div>
+          <label for="audit-email" class="font-mono text-xs uppercase tracking-wide text-ink-soft/50">Email</label>
+          <input
+            id="audit-email"
+            name="email"
+            type="email"
+            required
+            class="mt-1.5 w-full rounded-sm border border-ink/15 bg-canvas px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-soft/40 focus:border-signal focus:outline-none"
+            placeholder="jan@sklep.pl"
+          />
+        </div>
+        <div>
+          <label for="audit-url" class="font-mono text-xs uppercase tracking-wide text-ink-soft/50">Link do sklepu</label>
+          <input
+            id="audit-url"
+            name="url"
+            type="text"
+            required
+            class="mt-1.5 w-full rounded-sm border border-ink/15 bg-canvas px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-soft/40 focus:border-signal focus:outline-none"
+            placeholder="https://"
+          />
+        </div>
+        <div>
+          <label for="audit-platform" class="font-mono text-xs uppercase tracking-wide text-ink-soft/50">Obecna platforma</label>
+          <select
+            id="audit-platform"
+            name="platform"
+            class="mt-1.5 w-full rounded-sm border border-ink/15 bg-canvas px-3.5 py-2.5 text-sm text-ink focus:border-signal focus:outline-none"
+          >
+            <option>WooCommerce</option>
+            <option>PrestaShop</option>
+            <option>Magento</option>
+            <option>Inna</option>
+          </select>
+        </div>
+        <div>
+          <label for="audit-message" class="font-mono text-xs uppercase tracking-wide text-ink-soft/50">Wiadomość (opcjonalnie)</label>
+          <textarea
+            id="audit-message"
+            name="message"
+            rows="3"
+            class="mt-1.5 w-full rounded-sm border border-ink/15 bg-canvas px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-soft/40 focus:border-signal focus:outline-none"
+            placeholder="Orientacyjna liczba zamówień miesięcznie, o co pytasz..."
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="mt-2 inline-flex items-center justify-center rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-porcelain transition-colors hover:bg-signal"
+        >
+          Wyślij zgłoszenie
+        </button>
+        <p class="text-center text-[11px] text-ink-soft/50">
+          Otworzy się Twój program pocztowy z gotową wiadomością.
+        </p>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const modal = document.getElementById('audit-modal') as HTMLDialogElement | null;
+  const openers = document.querySelectorAll<HTMLElement>('[data-open-audit-modal]');
+  const closers = modal?.querySelectorAll<HTMLElement>('[data-close-audit-modal]');
+  const form = document.getElementById('audit-form') as HTMLFormElement | null;
+
+  openers.forEach((btn) => btn.addEventListener('click', () => modal?.showModal()));
+  closers?.forEach((btn) => btn.addEventListener('click', () => modal?.close()));
+
+  modal?.addEventListener('click', (event) => {
+    if (event.target === modal) modal.close();
+  });
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const data = new FormData(form);
+    const name = String(data.get('name') ?? '');
+    const senderEmail = String(data.get('email') ?? '');
+    const url = String(data.get('url') ?? '');
+    const platform = String(data.get('platform') ?? '');
+    const message = String(data.get('message') ?? '');
+
+    const auditEmail = modal?.dataset.auditEmail ?? '';
+    const subject = encodeURIComponent('Audyt migracji do Shopify');
+    const body = encodeURIComponent(
+      `Cześć,\n\nImię i nazwisko: ${name}\nKontakt zwrotny: ${senderEmail}\nLink do sklepu: ${url}\nObecna platforma: ${platform}\n\nWiadomość:\n${message}`,
+    );
+
+    window.location.href = `mailto:${auditEmail}?subject=${subject}&body=${body}`;
+    modal?.close();
+    form.reset();
+  });
+</script>

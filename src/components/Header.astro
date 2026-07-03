@@ -39,13 +39,14 @@ const navLinks = [
     </nav>
 
     <div class="hidden lg:block">
-      <a
-        href="#kontakt"
+      <button
+        type="button"
+        data-open-audit-modal
         class="navbar-cta group inline-flex items-center gap-2.5 rounded-full bg-ink py-2.5 pl-4 pr-5 text-sm font-semibold text-porcelain transition-colors hover:bg-signal"
       >
         <span class="status-dot relative h-2 w-2 rounded-full bg-mint text-mint" aria-hidden="true"></span>
         Umów audyt
-      </a>
+      </button>
     </div>
 
     <button
@@ -78,13 +79,14 @@ const navLinks = [
         </a>
       ))
     }
-    <a
-      href="#kontakt"
+    <button
+      type="button"
+      data-open-audit-modal
       class="mt-2 inline-flex items-center justify-center gap-2.5 rounded-full bg-ink px-4 py-3 text-sm font-semibold text-porcelain"
     >
       <span class="status-dot relative h-2 w-2 rounded-full bg-mint text-mint" aria-hidden="true"></span>
       Umów audyt
-    </a>
+    </button>
   </nav>
 </header>
 
@@ -101,11 +103,11 @@ const navLinks = [
     setMobileNavOpen(toggle.getAttribute('aria-expanded') !== 'true');
   });
 
-  mobileNav?.querySelectorAll('a').forEach((link) => {
+  mobileNav?.querySelectorAll('a, button').forEach((link) => {
     link.addEventListener('click', () => setMobileNavOpen(false));
   });
 
-  // Pigułka (desktop) kurczy się o ~20% po przewinięciu + pasek postępu lektury u góry ekranu.
+  // Pigułka (desktop) kurczy się o ~12% po przewinięciu + pasek postępu lektury u góry ekranu.
   // Na mobile pasek chowa się przy scrollu w dół i wraca przy scrollu w górę.
   const siteHeader = document.getElementById('site-header');
   const navbarPill = document.getElementById('navbar-pill');
